@@ -1,0 +1,14 @@
+# 1. Environment Secrets (CRITICAL)
+# Protects your database passwords and JWT secrets from leaking
+backend/.env
+frontend/.env
+*.env.local
+
+# 2. Package Dependencies
+# Prevents thousands of unnecessary third-party files from being tracked
+backend/node_modules/
+frontend/node_modules/
+
+# 3. Frontend Build Outputs (If you add a builder/bundler later)
+frontend/dist/
+frontend/build/
