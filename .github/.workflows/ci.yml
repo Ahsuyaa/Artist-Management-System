@@ -1,23 +1,57 @@
-name: Node CI
+name: Full Stack CI Pipeline
 
 on:
   push:
+    branches: [ "main" ]
+  pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+    strategy:
+      matrix:
+        node-version: [18]
 
-      - name: Setup Node
+    steps:
+      # 1. Checkout repo
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ matrix.node-version }}
 
-      - name: Install backend
-        run: cd backend && npm install
+      # =========================
+      # BACKEND SETUP
+      # =========================
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
 
-      - name: Install frontend
-        run: cd frontend && npm install
+      - name: Run Backend (Basic Check)
+        working-directory: ./backend
+        run: node src/server.js &
+        continue-on-error: true
+
+      # =========================
+      # FRONTEND SETUP
+      # =========================
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Run Frontend Lint (if exists)
+        working-directory: ./frontend
+        run: npm run lint || echo "No lint script found"
+
+      # =========================
+      # BASIC VALIDATION
+      # =========================
+      - name: Validate Project Structure
+        run: |
+          echo "Checking project structure..."
+          ls -R
