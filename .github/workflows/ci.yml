@@ -56,5 +56,20 @@ jobs:
       # =========================
       - name: Validate Project Structure
         run: |
-          echo "Checking project structure..."
-          ls -R
+          echo "Checking backend and frontend structure..."
+
+          if [ -d "backend" ]; then
+            echo "Backend exists"
+            ls -R backend
+          else
+            echo "Backend missing"
+            exit 1
+          fi
+
+          if [ -d "frontend" ]; then
+            echo "Frontend exists"
+            ls -R frontend
+          else
+            echo "Frontend missing"
+            exit 1
+          fi
