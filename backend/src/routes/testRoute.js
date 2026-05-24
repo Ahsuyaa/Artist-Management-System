@@ -1,12 +1,12 @@
 const testController = require("../controllers/testController");
 
 function testRoute(req, res) {
-
     if (req.url === "/api/test" && req.method === "GET") {
-        return testController(req, res);
+        testController(req, res); 
+        return true;            
     }
 
-    return false; // not handled
+    return false;
 }
 
 module.exports = testRoute;
