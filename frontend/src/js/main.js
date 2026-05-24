@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><strong>Total Albums:</strong> ${artist.albums}</p>
             <p><strong>Top Hit:</strong> "${artist.popularSong}"</p>
           `;
-          artisContainer.appendChild(card);
+          artistContainer.appendChild(card);
         });
       }
     })
