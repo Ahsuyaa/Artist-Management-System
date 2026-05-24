@@ -7,7 +7,7 @@ function getArtists(req, res) {
     
     console.log("Looking for file at:", filePath); // Check your terminal for this output!
 
-    fs.readFile(filePath, "utf-8", (err, fileData) => {
+    fs.radFile(filePath, "utf-8", (err, fileData) => {
         if (err) {
             console.error("System Error details:", err.code, "-", err.message);
 

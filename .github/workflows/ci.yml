@@ -1,4 +1,4 @@
-name: Full Stack CI Pipeline
+name: Full Stack CI Pipeline (Strict)
 
 on:
   push:
@@ -15,41 +15,44 @@ jobs:
         node-version: [18]
 
     steps:
-      # 1. Checkout repo
+      # =========================
+      # 1. Checkout code
+      # =========================
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # =========================
       # 2. Setup Node
+      # =========================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
       # =========================
-      # BACKEND SETUP
+      # BACKEND CHECK
       # =========================
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm install
 
-      - name: Run Backend (Basic Check)
+      - name: Backend Syntax Check
         working-directory: ./backend
-        run: node src/server.js &
-        continue-on-error: true
+        run: node -c src/server.js
 
       # =========================
-      # FRONTEND SETUP
+      # FRONTEND CHECK
       # =========================
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
 
-      - name: Run Frontend Lint (if exists)
+      - name: Run Frontend Lint (STRICT)
         working-directory: ./frontend
-        run: npm run lint || echo "No lint script found"
+        run: npm run lint
 
       # =========================
-      # BASIC VALIDATION
+      # STRUCTURE CHECK
       # =========================
       - name: Validate Project Structure
         run: |
