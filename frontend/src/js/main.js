@@ -1,4 +1,5 @@
 const API_BASE_URL = "http://localhost:4000"; 
+
 document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("title");
   const artistContainer = document.getElementById("artist-list");
@@ -15,13 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.json();
     })
     .then((payload) => {
-      console.log("Backend Raw Response:", payload);
-      
+      console.log("Backend Raw Array Data Received:", payload);
 
       if (artistContainer) {
-        artistContainer.innerHTML = "";
+        artistContainer.innerHTML = ""; 
         
-
         payload.data.forEach((artist) => {
           const card = document.createElement("div");
           card.className = "artist-card";
@@ -37,9 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
     .catch((err) => {
-      console.error("Backend connection broken:", err);
+   
       if (artistContainer) {
-        artistContainer.innerHTML = `<p class="error"errorrrrrrrrrrrr.</p>`;
+        // FIXED: String converted entirely to double quotes to satisfy ESLint
+        artistContainer.innerHTML = "<p class=\"error\">Unable to display system profiles right now</p>";
       }
     });
 });
