@@ -2,9 +2,10 @@ name: Full Stack CI Pipeline (Strict)
 
 on:
   push:
-    branches: [ "main" ]
+    # "**" matches any branch name (e.g., feature/auth, dev, bugfix, main)
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
 jobs:
   build:
@@ -30,12 +31,34 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       # =========================
+      # STRUCTURE CHECK (Moved up to fail early if directories are missing)
+      # =========================
+      - name: Validate Project Structure
+        run: |
+          echo "Checking backend and frontend structure..."
+
+          if [ -d "backend" ]; then
+            echo "Backend directory found."
+          else
+            echo "Error: Backend folder missing!"
+            exit 1
+          fi
+
+          if [ -d "frontend" ]; then
+            echo "Frontend directory found."
+          else
+            echo "Error: Frontend folder missing!"
+            exit 1
+          fi
+
+      # =========================
       # BACKEND CHECK
       # =========================
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm install
 
+      # -c compiles files without running them to check for pure syntax errors
       - name: Backend Syntax Check
         working-directory: ./backend
         run: node -c src/server.js
@@ -43,33 +66,17 @@ jobs:
       # =========================
       # FRONTEND CHECK
       # =========================
-      - name: Install Frontend Dependencies
-        working-directory: ./frontend
-        run: npm install
-
-      - name: Run Frontend Lint (STRICT)
-        working-directory: ./frontend
-        run: npm run lint
-
-      # =========================
-      # STRUCTURE CHECK
-      # =========================
-      - name: Validate Project Structure
+      # This step checks if a package.json exists before attempting to run builds/lints.
+      # If your frontend is just plain HTML/CSS/JS files, it will safely log and skip.
+      - name: Process Frontend Assets
         run: |
-          echo "Checking backend and frontend structure..."
-
-          if [ -d "backend" ]; then
-            echo "Backend exists"
-            ls -R backend
+          if [ -f "frontend/package.json" ]; then
+            echo "Node project detected in frontend. Running checks..."
+            cd frontend
+            npm install
+            npm run lint
           else
-            echo "Backend missing"
-            exit 1
-          fi
-
-          if [ -d "frontend" ]; then
-            echo "Frontend exists"
-            ls -R frontend
-          else
-            echo "Frontend missing"
-            exit 1
+            echo "Plain HTML/CSS/JS frontend detected. Skipping NPM operations."
+            echo "Verifying index.html location:"
+            ls -l frontend/index.html
           fi
