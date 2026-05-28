@@ -8,6 +8,7 @@
    "start": "live-server src",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
+    
   },
   "keywords": [],
   "author": "",

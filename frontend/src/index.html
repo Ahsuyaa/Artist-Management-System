@@ -1,23 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artist Management System</title>
-  <link rel="stylesheet" href="./css/style.css" />
-  <script src="./js/main.js" defer></script>
+  <meta charset="UTF-8">
+  <title>Artist Management</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <h1 id="title" style="cursor: pointer;">Artist Management System</h1>
-  </header>
 
-  <main>
-    <h2>Featured Music Profiles</h2>
-    
-    <div id="artist-list" class="artist-grid">
-      <p>Loading artists platform data stream...</p>
-    </div>
-  </main>
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="screen">
+    <h2>Login</h2>
+
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p onclick="showRegister()">Don't have an account? Register</p>
+
+    <p id="loginMsg"></p>
+  </div>
+
+  <!-- REGISTER SCREEN -->
+  <div id="registerScreen" class="screen hidden">
+    <h2>Register</h2>
+
+    <input type="text" id="firstName" placeholder="First Name">
+    <input type="text" id="lastName" placeholder="Last Name">
+    <input type="email" id="registerEmail" placeholder="Email">
+    <input type="text" id="phone" placeholder="Phone Number (+123...)">
+<input type="date" id="dob">
+<select id="gender">
+  <option value="" disabled selected>Select Gender</option>
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+  <option value="other">Other</option>
+</select>
+<select id="registerRole">
+  <option value="artist" selected>I am an Artist</option>
+  <option value="artist_manager">I am an Artist Manager</option>
+</select>
+<input type="text" id="address" placeholder="Mailing Address">
+    <input type="password" id="registerPassword" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+
+    <p onclick="showLogin()">Already have an account? Login</p>
+
+    <p id="registerMsg"></p>
+  </div>
+
+  <!-- HOME SCREEN -->
+  <div id="homeScreen" class="screen hidden">
+    <h2>Home Dashboard</h2>
+
+    <p>Welcome to Artist Management System </p>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
